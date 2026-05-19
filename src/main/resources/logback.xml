@@ -1,0 +1,69 @@
+<!-- Root element of Logback configuration -->
+<configuration>
+
+    <!-- Appender means destination where logs will be printed -->
+
+    <!-- Console appender prints logs in IntelliJ/terminal console -->
+    <appender name="myConsoleAppender"
+              class="ch.qos.logback.core.ConsoleAppender">
+
+        <!-- Encoder decides the format/style of logs -->
+        <encoder>
+
+            <!-- Pattern defines how each log line should look -->
+            <pattern>
+
+                <!--
+                    %d -> date/time
+                    {HH:mm:ss.SSS} -> hour:min:sec:milliseconds
+                    [%thread] -> current thread name
+                    %-5level -> log level with fixed width
+                    %logger{36} -> logger/class name max 36 chars
+                    %msg -> actual log message
+                    %n -> new line
+                -->
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+
+            </pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- File appender stores logs inside a file -->
+    <appender name="myFileAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Name/path of log file -->
+        <file>
+            journalApp.log
+        </file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>journalApp-%d{yy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>10</maxHistory> <!--max 10 logs-->
+        </rollingPolicy>
+
+        <!-- Encoder formats logs before writing to file -->
+        <encoder>
+
+            <!-- Same log pattern used for file logs -->
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+
+        </encoder>
+
+    </appender>
+
+    <!-- Root logger controls overall logging behavior -->
+    <root level="INFO">
+
+        <!-- Attach console appender to root logger -->
+        <appender-ref ref="myConsoleAppender" />
+
+        <!-- Attach file appender to root logger -->
+        <appender-ref ref="myFileAppender" />
+
+    </root>
+
+</configuration>
